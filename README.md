@@ -1,54 +1,90 @@
-# 🎥🌐 YouTube & Website RAG Chatbot
+# 🌐 URL Summarizer & RAG Chatbot
 
-A GenAI-powered application that summarizes content from YouTube videos and websites, generates key takeaways, and allows users to ask questions using Retrieval-Augmented Generation (RAG).
+A GenAI-powered application that summarizes content from websites and YouTube videos, generates key takeaways, and enables users to ask questions using Retrieval-Augmented Generation (RAG).
 
-## Features
+## 🚀 Live Demo
 
-* 📺 YouTube Video Summarization
+**Streamlit App:**
+
+https://youtube-website-rag-chatbot-6xwiv7yqy6xxpmqjjwnnzm.streamlit.app/
+
+## ✨ Features
+
 * 🌐 Website Content Summarization
+* 📺 YouTube Video Summarization
 * 📝 Key Takeaways Generation
-* 🤖 Question Answering using RAG
+* 🤖 RAG-based Question Answering
 * 🔍 Semantic Search with FAISS
 * 🧠 HuggingFace Embeddings
 * ⚡ Groq LLM Integration
 * 🎨 Streamlit User Interface
 
-## Tech Stack
+## 🏗️ Architecture
+
+```text
+User URL
+   ↓
+Content Loader
+(Website / YouTube)
+   ↓
+Document Processing
+   ↓
+Text Chunking
+   ↓
+HuggingFace Embeddings
+   ↓
+FAISS Vector Store
+   ↓
+Retriever
+   ↓
+Groq LLM
+   ↓
+Summary & Answers
+```
+
+## 🛠️ Tech Stack
 
 * Python
 * Streamlit
 * LangChain
 * Groq (Llama 3.3 70B)
 * HuggingFace Embeddings
-* FAISS Vector Store
+* FAISS
 * UnstructuredURLLoader
 * YoutubeLoader
+* python-dotenv
 
-## Project Workflow
+## 📂 Project Workflow
 
-User URL
-↓
+### Summarization Flow
+
+```text
+URL
+ ↓
 Load Content
-↓
-Website Loader / YouTube Loader
-↓
+ ↓
 Generate Summary
-↓
-Split Documents into Chunks
-↓
-Create Embeddings
-↓
-Store Vectors in FAISS
-↓
-Create Retriever
-↓
-Ask Questions
-↓
-Retrieve Relevant Chunks
-↓
-Generate Answer using LLM
+ ↓
+Display Summary
+```
 
-## Installation
+### RAG Question Answering Flow
+
+```text
+Question
+ ↓
+Retriever
+ ↓
+Relevant Chunks
+ ↓
+Context Creation
+ ↓
+Groq LLM
+ ↓
+Answer
+```
+
+## ⚙️ Installation
 
 Clone the repository:
 
@@ -57,7 +93,7 @@ git clone https://github.com/princekumar1402/youtube-website-rag-chatbot.git
 cd youtube-website-rag-chatbot
 ```
 
-Create virtual environment:
+Create a virtual environment:
 
 ```bash
 python -m venv venv
@@ -77,7 +113,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-## Environment Variables
+## 🔑 Environment Variables
 
 Create a `.env` file:
 
@@ -85,30 +121,33 @@ Create a `.env` file:
 GROQ_API_KEY=your_groq_api_key
 ```
 
-## Run the Application
+## ▶️ Run Locally
 
 ```bash
 streamlit run app.py
 ```
 
-## Example Use Cases
+## 📌 Notes
 
-* Summarize educational YouTube videos
-* Summarize blog articles and documentation
-* Chat with website content
-* Extract key insights from long-form content
+* Website extraction depends on the accessibility of the target website.
+* Some YouTube videos may restrict transcript access.
+* Cloud deployments may face limitations due to source-site blocking policies.
 
-## Future Improvements
+## 🎓 Learning Outcomes
 
-* Multiple URL Support
-* Conversation Memory
-* Source Citations
-* PDF Export
-* Chat History
-* Advanced RAG Pipelines
+This project demonstrates:
 
-## Author
+* Retrieval-Augmented Generation (RAG)
+* Vector Databases (FAISS)
+* Embeddings and Semantic Search
+* Prompt Engineering
+* LLM Integration with Groq
+* Streamlit Deployment
+* LangChain Framework
 
-Prince Kumar
+## 👨‍💻 Author
+
+**Prince Kumar**
 
 B.Tech CSE, IIIT Kottayam
+
