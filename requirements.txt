@@ -12,3 +12,6 @@ pytube
 python-dotenv
 torch
 torchvision
+beautifulsoup4
+lxml
+html5lib

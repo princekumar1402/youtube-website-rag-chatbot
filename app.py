@@ -7,7 +7,7 @@ from langchain_community.vectorstores import FAISS
 
 import streamlit as st
 from langchain_community.document_loaders import (
-    UnstructuredURLLoader,
+    WebBaseLoader,
     YoutubeLoader
 )
 
@@ -25,9 +25,7 @@ def load_content(url):
 
         else:
 
-            loader = UnstructuredURLLoader(
-                urls=[url]
-            )
+           loader = WebBaseLoader(url)
 
         docs = loader.load()
 
@@ -99,6 +97,7 @@ def generate_summary(llm, docs):
     content = "\n\n".join(
         [doc.page_content for doc in docs]
     )
+    content = content[:5000]
 
     prompt = ChatPromptTemplate.from_template(
         """
@@ -170,6 +169,7 @@ if st.button("Process"):
             st.stop()
          
         docs = load_content(url)
+        st.write("Docs Loaded:", len(docs))
 
         if not docs:
             st.error("Could not extract content from the URL.")
