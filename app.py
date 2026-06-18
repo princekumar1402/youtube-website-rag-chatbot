@@ -14,19 +14,28 @@ from langchain_community.document_loaders import (
 # Define function FIRST
 def load_content(url):
 
-    if "youtube.com" in url or "youtu.be" in url:
-        loader = YoutubeLoader.from_youtube_url(
-            url,
-            add_video_info=False,
-            language=["en"]
-        )
-    else:
-        loader = UnstructuredURLLoader(
-            urls=[url]
-        )
+    try:
+        if "youtube.com" in url or "youtu.be" in url:
 
-    docs = loader.load()
-    return docs
+            loader = YoutubeLoader.from_youtube_url(
+                url,
+                add_video_info=False,
+                language=["en"]
+            )
+
+        else:
+
+            loader = UnstructuredURLLoader(
+                urls=[url]
+            )
+
+        docs = loader.load()
+
+        return docs
+
+    except Exception as e:
+        st.error(f"Failed to load content: {str(e)}")
+        return []
 
 
 # Streamlit code AFTER function
@@ -53,16 +62,17 @@ def split_documents(docs):
 # create vectorstore from chunks
 def create_vectorstore(chunks):
 
+    if not chunks:
+        raise ValueError("No chunks found.")
+
     embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-MiniLM-L6-v2"
     )
 
-    vectorstore = FAISS.from_documents(
+    return FAISS.from_documents(
         chunks,
         embeddings
     )
-
-    return vectorstore
 # create retriever from vectorstore
 def create_retriever(vectorstore):
 
@@ -151,15 +161,19 @@ def ask_question(llm, retriever, question):
     return response
 
 llm = get_llm()
+docs = []
 # button to process URL and generate summary and retriever
 if st.button("Process"):
-
     with st.spinner("Processing..."):
         if not url:
-           st.error("Please enter a URL")
-           st.stop()
-
+            st.error("Please enter a URL")
+            st.stop()
+         
         docs = load_content(url)
+
+        if not docs:
+            st.error("Could not extract content from the URL.")
+            st.stop()
 
         summary = generate_summary(
             llm,
@@ -167,6 +181,13 @@ if st.button("Process"):
         )
 
         chunks = split_documents(docs)
+
+        st.write("Documents:", len(docs))
+        st.write("Chunks:", len(chunks))
+
+        if not chunks:
+            st.error("No chunks were created from the content.")
+            st.stop()
 
         vectorstore = create_vectorstore(
             chunks
@@ -177,6 +198,7 @@ if st.button("Process"):
         )
 
         st.session_state.retriever = retriever
+
 
         st.session_state.summary = summary
 
