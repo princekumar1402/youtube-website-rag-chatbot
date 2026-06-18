@@ -10,3 +10,5 @@ unstructured
 youtube-transcript-api
 pytube
 python-dotenv
+torch
+torchvision
